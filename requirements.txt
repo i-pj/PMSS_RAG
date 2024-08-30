@@ -5,3 +5,4 @@ langchain_huggingface
 pypdf
 faiss-cpu
 chromadb
+protobuf==3.20.0
