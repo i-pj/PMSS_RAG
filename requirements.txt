@@ -3,5 +3,5 @@ langchain
 langchain_community
 langchain_huggingface
 pypdf
-faiss-gpu
+faiss-cpu
 chromadb
