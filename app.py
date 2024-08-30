@@ -10,7 +10,7 @@ from langchain.prompts import PromptTemplate
 PDF = "./FAQs PMSSS 2023-24.pdf"
 
 
-@st.cache_resource
+@st.cache_data
 def load_process_and_create_vector_store():
     loader = PyPDFLoader(PDF)
     documents = loader.load()
