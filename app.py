@@ -10,7 +10,7 @@ from langchain.prompts import PromptTemplate
 PDF = "./FAQs PMSSS 2023-24.pdf"
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def load_process_and_create_vector_store():
     loader = PyPDFLoader(PDF)
     documents = loader.load()
@@ -25,7 +25,6 @@ def setup_qa_chain(vector_store):
     llm = Ollama(model="llama3:8b")
     template = """
     You are an AI assistant for the PMSSS scholarship program. Use the following pieces of context to answer the human's question. If you don't know the answer, just say that you don't know, don't try to make up an answer.
-
     Context: {context}
     
     Human: {question}
@@ -44,21 +43,16 @@ def setup_qa_chain(vector_store):
 
 def main():
     st.title("PMSSS Scholarship Assistant")
-
     vector_store = load_process_and_create_vector_store()
     qa_chain = setup_qa_chain(vector_store)
-
     question = st.text_input("How can I assist you with the PMSSS scholarship program?")
-
     if question:
         with st.spinner("Searching for information..."):
             result = qa_chain.invoke({"query": question})
-
         st.write(result["result"])
-
         with st.expander("View sources"):
             for i, source in enumerate(result["source_documents"], 1):
-                st.write("Source " + str(i) + ":")
+                st.write(f"Source {i}:")
                 st.write(source.page_content[:500] + "...")
 
 
